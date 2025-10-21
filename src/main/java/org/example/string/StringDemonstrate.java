@@ -1,5 +1,7 @@
 package org.example.string;
 
+import java.util.Arrays;
+
 public class StringDemonstrate {
 
   public static void proofAndSearch() {
@@ -45,5 +47,73 @@ public class StringDemonstrate {
     // wirft immer NullPointerException, weil
     // diese Methode immer auf einem Objekt ausgeführt wird
     // System.out.println("is null: " + s2.isEmpty());
+  }
+
+  public static void changeAndReplace() {
+    String t = " Rot Gelb Blau ";
+
+    // schneidet Leer- und Formatierungszeichen am Rang ab
+    String trimmed = t.trim();
+    System.out.println("ungetrimmt: " + t);
+    System.out.println("  getrimmt: " + trimmed);
+
+    System.out.println();
+
+    // verändert alle Kleinbuchstaben zu Großbuchstaben
+    String upper = trimmed.toUpperCase();
+    System.out.println("in Großbuchstaben: " + upper);
+
+    // verändert alle Großbuchstaben zu Kleinbuchstaben & ersetzt Leerzeichen durch Bindestrich
+    String kebab = trimmed.toLowerCase().replace(" ", "-");
+    //                         return ---->
+    // Ausgabe: "rot-gelb-blau"
+    System.out.println("in Kebab-Case: " + kebab);
+
+    // ersetzt alle L durch = und alle B durch !
+    String unlesbar =
+        trimmed.replace("l", "=")      // gibt String zurück
+               .replace("b", "!")      // gibt String zurück
+               .replace("B", "(@)")
+               .replace("au", "#");
+    // Ausgabe: "Rot Ge=! B=au"
+    System.out.println("unlesbar: " + unlesbar);
+    System.out.println();
+
+    // Vorsicht bei Methodenverkettungen: der Rückgabewert kann sich im Datentyp ändern
+    // Beispiel für eine Umwandlung Integer -> String
+    Integer a = 10115;
+    String chained = a.toString().replace("1", "!");
+    System.out.println("chained: " + chained);
+    // Ausgabe: "!0!!5"
+
+    trimmed = "rot \n\n\tgrün              blau";
+    // ersetzt mehrfach Leer- und Steuerzeichen mit Hilfe von einer regional Expression (regex)
+    String clean = trimmed.replaceAll("\\s+", " ");
+    System.out.println("unbereinigt: " + trimmed);
+    System.out.println("bereinigter String: " + clean);
+    System.out.println();
+
+    // schneidet Teilstring heraus [n, m[
+    String teil = clean.substring(4, 8);
+    System.out.println("Teil von drei Farben: " + teil);
+
+    // teilt entlang eines Strings (regex!), gibt Array zurück
+    String[] farben = clean.split(" ");
+    // Ausgabe: ["rot", "grün", "blau"]
+    System.out.println("Array von Farben: " + Arrays.toString(farben));
+    // das Array wieder zusammensetzen mit String.join(...)
+    // Ausgabe: "rot,grün,blau"
+    System.out.println("Join mit Komma: " + String.join(",", farben));
+    System.out.println("mit fixem Array: " + String.join("--", new String[]{"Berg", "Tal", "Wald"}));
+
+    // format für Zeichenketten
+    String formatiert = "-- '%10s' -- %d";
+    System.out.printf(formatiert, "Land", 10);
+    System.out.println();
+    String fmt = String.format(formatiert,"Fluss", 5);
+    System.out.println(fmt);
+    String fmt2 = String.format(formatiert,"Flussbiegungsangler", 5);
+    System.out.println(fmt2);
+
   }
 }
