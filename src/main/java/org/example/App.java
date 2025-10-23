@@ -1,23 +1,10 @@
 package org.example;
 
-import static org.example.string.StringDemonstrate.changeAndReplace;
-import static org.example.string.StringUtil.wrapWith;
+import static org.example.decisions.DecisionsDemonstrate.writeExaminationGrade;
 
 public class App {
   public static void main(String[] args) {
-    changeAndReplace();
-
-//    schreibeEinkaufsliste();
-//    geheEinkaufen();
-//    stelleEinkaufInKühlschrankUndLebensmittelschrank();
-
-    // lies Daten aus einem Service
-    // verarbeite die Daten
-    // speichere diese in eine Datenbank
-
+    // points: 101, -1, 90, 75, 60, 59
+    writeExaminationGrade(59);
   }
-
-  private static void schreibeEinkaufsliste() {}
-  private static void geheEinkaufen() {}
-  private static void stelleEinkaufInKühlschrankUndLebensmittelschrank() {}
 }

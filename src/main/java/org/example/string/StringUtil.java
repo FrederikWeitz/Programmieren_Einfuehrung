@@ -2,7 +2,7 @@ package org.example.string;
 
 public class StringUtil {
 
-  // 1) Räume Mehrfach-Leerzeichen auf uund trimme Ränder
+  // 1) Räume Mehrfach-Leerzeichen auf und trimme Ränder
   public static String normalizeSpaces(String s) {
     // Eingabe: String, nicht normalisiert
     // Ausgabe: String, normalisiert
