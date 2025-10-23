@@ -2,6 +2,19 @@ package org.example.string;
 
 public class StringUtil {
 
+  // 1) Räume Mehrfach-Leerzeichen auf uund trimme Ränder
+  public static String normalizeSpaces(String s) {
+    // Eingabe: String, nicht normalisiert
+    // Ausgabe: String, normalisiert
+    // Randfälle: a) String ist leer, b) String ist nur mit Leerzeichen gefüllt, c) String ist null
+
+    // Guard Clause: diese behandeln Sonderfälle, die im normalen Algorithmus
+    // nicht behandelt werden können (oder sollen), wie z. B. das null-Objekt
+    if (s == null) return "";
+
+    return s.trim().replaceAll("\\s+", " ");
+  }
+
 
 
   /**
