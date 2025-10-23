@@ -114,6 +114,5 @@ public class StringDemonstrate {
     System.out.println(fmt);
     String fmt2 = String.format(formatiert,"Flussbiegungsangler", 5);
     System.out.println(fmt2);
-
   }
 }

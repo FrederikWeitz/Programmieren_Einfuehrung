@@ -23,4 +23,59 @@ public class DecisionsUtil {
     return number >= interval[0] && number <= interval[1];
   }
 
+  public static String getFullLengthDayName(int dayNumber) {
+    // Guard-Clause für ungültige Werte
+    if (dayNumber < 1 || dayNumber > 7) { return null; }
+
+    String fullLengthName;
+
+    // switch: wähle anhand des Wertes den passenden Fall
+    switch(dayNumber) {
+      case 1:
+        fullLengthName = "Montag";
+        break;
+      case 2:
+        fullLengthName = "Dienstag";
+        break;
+      case 3:
+        fullLengthName = "Mittwoch";
+        break;
+      case 4:
+        fullLengthName = "Donnerstag";
+        break;
+      case 5:
+        fullLengthName = "Freitag";
+        break;
+      default:
+        fullLengthName = "Wochenende";
+    }
+    return fullLengthName;
+  }
+
+  public static String getFullLengthDayNameShortened(int dayNumber) {
+    // Guard-Clause für ungültige Werte
+    if (dayNumber < 1 || dayNumber > 7) { return null; }
+
+    // switch: wähle anhand des Wertes den passenden Fall
+    return switch (dayNumber) {
+      case 1 -> "Montag";
+      case 2 -> "Dienstag";
+      case 3 -> "Mittwoch";
+      case 4 -> "Donnerstag";
+      case 5 -> "Freitag";
+      default -> "Wochenende";
+    };
+  }
+
+  public static String getFullLengthDayNameWithArray(int dayNumber) {
+    // Guard-Clause für ungültige Werte
+    if (dayNumber < 1 || dayNumber > 7) { return null; }
+
+    String[] fullLengthName = {"Mo", "Di", "Mi", "Do", "Fr", "Wochenende"};
+
+    if (dayNumber < 6) {
+      return fullLengthName[dayNumber-1];
+    }
+    return fullLengthName[5];
+  }
 }
