@@ -1,14 +1,10 @@
 package org.example;
 
-import static org.example.authority.Authorization.checkAuthority;
+import static org.example.loops.LoopDemonstrate.*;
 
 public class App {
   public static void main(String[] args) {
 
-    if (checkAuthority(1, 236)) {
-      System.out.println("Für Zugang berechtigt!");
-    } else {
-      System.out.println("Berechtigung fehlt!");
-    }
+    forEachWithArrayList();
   }
 }
