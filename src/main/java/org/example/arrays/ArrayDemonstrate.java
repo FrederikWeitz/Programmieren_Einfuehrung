@@ -28,8 +28,30 @@ public class ArrayDemonstrate {
   }
 
   public static int[] sortWithBubble(int[] arr) {
+    // Eingabe: beliebiges Ganzzahl-Array oder null
+    // Ausgabe: sortiertes Ganzzahl-Array oder null
 
-    return new int[]{};
+    // Guard Clause I: Parameter ist null -> Rückgabe ist null
+    if (arr == null) return null;
+
+    // Guard Clause II: Array ist leer oder besitzt nur ein Element -> Sortieren unnötig
+    if (arr.length <= 1) return arr;
+
+    // Solange sortieren, bis von arr.length - 1 (normaler höchster Index eines Arrays)
+    // und noch mal -1, weil das letzte Element keinen Nachfolger hat
+    // da bei jedem Durchlauf noch ein Element weniger geprüft werden muss, brauche ich
+    // eine Reihe von length-2, bis length entspricht null, absteigend:
+    // ich muss die äußere Schleife runterzählen
+
+
+    // jedes Element von index = 0 bis index = äußere Schleifenvariable
+
+    // aktuelles und nächstes Element überprüfen
+    // WENN aktuelles > nächstes, DANN tauschen
+    // (aktuelles Element raus, nächstes Element nach unten, rausgenommenes Element einfügen)
+
+
+    return arr;
   }
 
 }
