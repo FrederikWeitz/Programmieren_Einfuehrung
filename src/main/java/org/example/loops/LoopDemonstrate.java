@@ -104,6 +104,10 @@ public class LoopDemonstrate {
     // String ohne Vokale
     // String nur aus Vokalen (mind. 3 für Anfang, Mitte, Ende)
 
+    // zum Begriff der Invariante:
+    // eine Regel, die durch den gesamten Schleifendurchlauf gilt
+    // (manchmal findet man auch zwei oder mehr Invarianten)
+
     // Guard-Clause für str = null && str = ""
     if (str == null || str.isEmpty()) return 0;
 
@@ -148,6 +152,21 @@ public class LoopDemonstrate {
 
     // Ausgabe String
     return str.toString();
+  }
+
+  public static void breakAndContinueDemo() {
+    int counter = 0;
+
+    while (counter < 50) {
+      System.out.printf("Ich bin beim Schleifendurchlauf %d von 50.\n", counter);
+      counter++;
+      if (counter%2 == 0) continue; // springt zu nächsten Schleifendurchlauf in den Schleifenkopf
+      System.out.printf("Das ist der %d. Schleifendurchlauf.\n", (counter - 1));
+      if (counter%13 == 0) break; // bricht die Schleife ab und fährt nach deren Ende fort
+      System.out.println("Nächster Schleifendurchlauf.");
+    }
+
+    System.out.println("Insgesamt ist die Schleife " + counter + " mal durchlaufen worden.");
   }
 
 }
