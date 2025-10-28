@@ -22,7 +22,7 @@
       --shadow: 0 8px 24px rgba(0,0,0,.35);
     }
 
-/*    @media (prefers-color-scheme: light) {
+    @media (prefers-color-scheme: light) {
       :root {
         --bg: #f7f8fb;
         --panel: #ffffff;
@@ -36,7 +36,7 @@
         --code-border: #e6e9f3;
         --shadow: 0 8px 24px rgba(23,27,43,.08);
       }
-    } */
+    }
 
     html, body { height: 100%; }
     body {
@@ -393,12 +393,15 @@
 		<li><a class="sb-link" id-index="schleifen-einfach">Einfache Schleifen</a></li>
 		<li><a class="sb-link" id-index="arrays">Arrays</a></li>
 		<li><a class="sb-link" id-index="java-math">Die Bibliothek Math</a></li>
-		<li><a class="sb-link" id-index="java-klassen">Klassen</a></li>
-		<li><a class="sb-link" id-index=""></a></li>
-		<li><a class="sb-link" id-index=""></a></li>
-		<li><a class="sb-link" id-index=""></a></li>
-		<li><a class="sb-link" id-index=""></a></li>
       </ul>
+	  <h3 id="sb-b1" class="sb-title">Klassen</h3>
+	  <ul class="sb-list">
+	    <li><a class="sb-link" id-index="java-klassen">Klassen</a></li>
+		<li><a class="sb-link" id-index="java-enums">Enums</a></li>
+		<li><a class="sb-link" id-index="java-records">Records</a></li>
+		<li><a class="sb-link" id-index=""></a></li>
+		<li><a class="sb-link" id-index=""></a></li>
+	  </ul>
     </nav>
   </aside>
 
@@ -7631,6 +7634,619 @@ Mira,19</code></pre>
 
         <dt>Stakeholder</dt>
         <dd>Personen/Gruppen mit Interesse am Projekt (z. B. Kunden, Management, QA).</dd>
+      </dl>
+    </section>
+
+  </main>
+</div>
+<!-- =========================== /Einbettbarer Inhalt =========================== -->
+
+
+
+
+<!-- ========= Einbettbarer Inhalt: Enums in Java – feste Werte für klare Entscheidungen =========== -->
+<div class="wrap" id="java-enums">
+
+  <!-- Hero / Titel -->
+  <section class="hero header">
+    <div class="hero-inner">
+      <h1>Enums in Java – feste Werte für klare Entscheidungen</h1>
+      <p class="subtitle">
+        Enums bündeln wohldefinierte, endliche Zustände – ideal für Bestellstatus, Steuerklassen, Währungen oder Risikostufen.
+        Du lernst einfache und erweiterte Enums (mit Feldern/Methoden) und setzt sie in kleinen Geschäftsbeispielen ein.
+      </p>
+      <p class="meta">
+        <span class="pill">Domänenwerte</span>
+        <span class="pill">Business-Use-Cases</span>
+        <span class="pill">Switch</span>
+        <span class="pill">Statische Methoden</span>
+        <span class="pill">Valides API-Design</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Inhaltsverzeichnis -->
+  <nav class="toc" aria-label="Inhaltsverzeichnis">
+    <h2>Inhalt</h2>
+    <ul>
+      <li><a href="#java-enums-lernziele">1) Was kannst du am Ende?</a></li>
+      <li><a href="#java-enums-einfuehrung">2) Was sind Enums?</a></li>
+      <li><a href="#java-enums-einsatz">3) Konkrete Einsatzszenarien im Geschäftsalltag</a></li>
+      <li><a href="#java-enums-einfach">4) Einfaches Enum + Anwendung (Switch, Rückgabewerte)</a></li>
+      <li><a href="#java-enums-komplex">5) Komplexes Enum (Felder, Konstruktoren, Methoden)</a></li>
+      <li><a href="#java-enums-bestpractices">6) Best Practices &amp; typische Fehler</a></li>
+      <li><a href="#java-enums-aufgaben">7) Aufgaben</a></li>
+      <li><a href="#java-enums-prompts">8) Vorschläge für KI-Prompts</a></li>
+      <li><a href="#java-enums-glossar">9) Glossar</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- Lernziele -->
+    <section id="java-enums-lernziele" aria-labelledby="java-enums-lernziele-h2">
+      <h2 id="java-enums-lernziele-h2">1) Was du am Ende kannst</h2>
+      <div class="grid">
+        <div class="callout ok"><strong>Enums erkennen &amp; begründen:</strong> Du wählst Enums für feste, endliche Wertemengen (z. B. Status, Kategorien).</div>
+        <div class="callout"><strong>Einfach/komplex nutzen:</strong> Du implementierst Enums mit Konstanten sowie mit zusätzlichen Feldern und Methoden.</div>
+        <div class="callout ok"><strong>API-Design:</strong> Du kombinierst Enums sinnvoll mit Switch, statischen Fabriken und Validierung.</div>
+        <div class="callout warn"><strong>Fehler vermeiden:</strong> Du kennst Anti-Pattern (z. B. magische Strings, falsche Ordinal-Nutzung).</div>
+      </div>
+    </section>
+
+    <!-- Einführung -->
+    <section id="java-enums-einfuehrung" aria-labelledby="java-enums-einfuehrung-h2">
+      <h2 id="java-enums-einfuehrung-h2">2) Was sind Enums?</h2>
+      <p>
+        Ein <strong>Enum</strong> (Aufzählungstyp) definiert eine <em>abgeschlossene Menge</em> an Konstanten. Jede Konstante ist eine
+        Instanz des Enum-Typs. Enums sind typsicher, gut lesbar und verhindern Tippfehler, die bei freien Strings entstehen.
+      </p>
+      <div class="callout">
+        <strong>Beispielgedanke:</strong> Ein Bestellvorgang kennt nur wenige gültige Zustände (z. B. <code class="inline">NEW</code>, <code class="inline">PAID</code>, <code class="inline">SHIPPED</code> …).
+        Genau dafür sind Enums gemacht.
+      </div>
+    </section>
+
+    <!-- Einsatzszenarien -->
+    <section id="java-enums-einsatz" aria-labelledby="java-enums-einsatz-h2">
+      <h2 id="java-enums-einsatz-h2">3) Konkrete Einsatzszenarien im Geschäftsalltag</h2>
+      <ul>
+        <li><strong>Bestellstatus:</strong> <code class="inline">NEW</code>, <code class="inline">PAID</code>, <code class="inline">SHIPPED</code>, <code class="inline">DELIVERED</code>, <code class="inline">CANCELLED</code>.</li>
+        <li><strong>Steuerklassen (USt):</strong> <code class="inline">STANDARD</code> (z. B. 19 %), <code class="inline">REDUZIERT</code> (z. B. 7 %).</li>
+        <li><strong>Währungen:</strong> <code class="inline">EUR</code>, <code class="inline">USD</code>, <code class="inline">JPY</code> – inkl. Symbol und Dezimalstellen.</li>
+        <li><strong>Risikolevel:</strong> <code class="inline">LOW</code>, <code class="inline">MEDIUM</code>, <code class="inline">HIGH</code> – z. B. für Compliance-Prüfungen.</li>
+        <li><strong>Produktkategorie:</strong> <code class="inline">FOOD</code>, <code class="inline">ELECTRONICS</code>, <code class="inline">CLOTHING</code> – inkl. Standardrabatt.</li>
+      </ul>
+    </section>
+
+    <!-- Einfaches Enum -->
+    <section id="java-enums-einfach" aria-labelledby="java-enums-einfach-h2">
+      <h2 id="java-enums-einfach-h2">4) Einfaches Enum + Anwendung (Switch, Rückgabewerte)</h2>
+      <p class="lead">Wir modellieren einen Bestellstatus und leiten daraus die nächste Prozessaktion ab.</p>
+
+      <figure class="code-figure">
+        <svg class="syntax" viewBox="0 0 980 740" role="img" aria-labelledby="enum-simple-title">
+          <title id="enum-simple-title">Java: Einfaches Enum &amp; Nutzung in Switch</title>
+          <rect x="0" y="0" width="980" height="740" class="panel"/>
+
+          <!-- Zeilennummern -->
+          <g>
+            <text class="ln" x="48" y="48">1</text><text class="ln" x="48" y="78">2</text><text class="ln" x="48" y="108">3</text>
+            <text class="ln" x="48" y="138">4</text><text class="ln" x="48" y="168">5</text><text class="ln" x="48" y="198">6</text>
+            <text class="ln" x="48" y="228">7</text><text class="ln" x="48" y="258">8</text><text class="ln" x="48" y="288">9</text>
+            <text class="ln" x="48" y="318">10</text><text class="ln" x="48" y="348">11</text><text class="ln" x="48" y="378">12</text>
+            <text class="ln" x="48" y="408">13</text><text class="ln" x="48" y="438">14</text><text class="ln" x="48" y="468">15</text>
+            <text class="ln" x="48" y="498">16</text><text class="ln" x="48" y="528">17</text><text class="ln" x="48" y="558">18</text>
+            <text class="ln" x="48" y="588">19</text><text class="ln" x="48" y="618">20</text><text class="ln" x="48" y="648">21</text>
+            <text class="ln" x="48" y="678">22</text><text class="ln" x="48" y="708">23</text>
+          </g>
+
+          <!-- Code -->
+          <text class="code" x="72" y="48"><tspan class="tok-cmt">// Einfaches Enum: mögliche Zustände einer Bestellung</tspan></text>
+          <text class="code" x="72" y="78"><tspan class="tok-kw">public</tspan> <tspan class="tok-kw">enum</tspan> <tspan class="tok-type">OrderStatus</tspan> <tspan class="tok-pun">{</tspan> <tspan class="tok-id">NEW</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">PAID</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">SHIPPED</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">DELIVERED</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">CANCELLED</tspan> <tspan class="tok-pun">}</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="108"> </text>
+          <text class="code" x="72" y="138"><tspan class="tok-cmt">// Methode: leitet nächste Prozessaktion aus dem Status ab</tspan></text>
+          <text class="code" x="72" y="168"><tspan class="tok-kw">public</tspan> <tspan class="tok-kw">class</tspan> <tspan class="tok-type">OrderFlow</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="92" y="198"><tspan class="tok-cmt">// Gib kurze Anweisung für den nächsten Schritt zurück</tspan></text>
+          <text class="code" x="92" y="228"><tspan class="tok-kw">public</tspan> <tspan class="tok-type">String</tspan> <tspan class="tok-fn">nextAction</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">OrderStatus</tspan> <tspan class="tok-id">status</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="112" y="258"><tspan class="tok-cmt">// Klassische Switch-Variante (vor Java 14)</tspan></text>
+          <text class="code" x="112" y="288"><tspan class="tok-kw">switch</tspan> <tspan class="tok-pun">(</tspan><tspan class="tok-id">status</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="132" y="318"><tspan class="tok-kw">case</tspan> <tspan class="tok-id">NEW</tspan><tspan class="tok-pun">:</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-str">"Zahlung anstoßen"</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="132" y="348"><tspan class="tok-kw">case</tspan> <tspan class="tok-id">PAID</tspan><tspan class="tok-pun">:</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-str">"Kommissionierung starten"</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="132" y="378"><tspan class="tok-kw">case</tspan> <tspan class="tok-id">SHIPPED</tspan><tspan class="tok-pun">:</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-str">"Tracking senden"</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="132" y="408"><tspan class="tok-kw">case</tspan> <tspan class="tok-id">DELIVERED</tspan><tspan class="tok-pun">:</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-str">"Rechnung schließen"</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="132" y="438"><tspan class="tok-kw">case</tspan> <tspan class="tok-id">CANCELLED</tspan><tspan class="tok-pun">:</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-str">"Storno verbuchen"</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="112" y="468"><tspan class="tok-pun">}</tspan></text>
+          <text class="code" x="112" y="498"><tspan class="tok-kw">return</tspan> <tspan class="tok-str">"Unbekannter Status"</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="92" y="528"><tspan class="tok-pun">}</tspan></text>
+          <text class="code" x="72" y="558"><tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="588"> </text>
+          <text class="code" x="72" y="618"><tspan class="tok-cmt">// Beispielaufruf: System.out.println(new OrderFlow().nextAction(OrderStatus.PAID));</tspan></text>
+          <text class="code" x="72" y="648"><tspan class="tok-cmt">// Erwartete Ausgabe: "Kommissionierung starten"</tspan></text>
+          <text class="code" x="72" y="678"> </text>
+          <text class="code" x="72" y="708"><tspan class="tok-cmt">// Wichtige neue Konzepte: enum, switch mit case, typsichere Zustände</tspan></text>
+        </svg>
+      </figure>
+    </section>
+
+    <!-- Komplexes Enum -->
+    <section id="java-enums-komplex" aria-labelledby="java-enums-komplex-h2">
+      <h2 id="java-enums-komplex-h2">5) Komplexes Enum (Felder, Konstruktoren, Methoden)</h2>
+      <p class="lead">Jetzt erweitern wir ein Enum um Datenfelder und Logik – Beispiel <em>Währung</em> und <em>Umsatzsteuer</em>.</p>
+
+      <figure class="code-figure">
+        <svg class="syntax" viewBox="0 0 980 1250" role="img" aria-labelledby="enum-complex-title">
+          <title id="enum-complex-title">Java: Komplexe Enums mit Feldern &amp; Methoden</title>
+          <rect x="0" y="0" width="980" height="1250" class="panel"/>
+
+          <!-- Zeilennummern -->
+          <g>
+            <text class="ln" x="48" y="48">1</text><text class="ln" x="48" y="78">2</text><text class="ln" x="48" y="108">3</text>
+            <text class="ln" x="48" y="138">4</text><text class="ln" x="48" y="168">5</text><text class="ln" x="48" y="198">6</text>
+            <text class="ln" x="48" y="228">7</text><text class="ln" x="48" y="258">8</text><text class="ln" x="48" y="288">9</text>
+            <text class="ln" x="48" y="318">10</text><text class="ln" x="48" y="348">11</text><text class="ln" x="48" y="378">12</text>
+            <text class="ln" x="48" y="408">13</text><text class="ln" x="48" y="438">14</text><text class="ln" x="48" y="468">15</text>
+            <text class="ln" x="48" y="498">16</text><text class="ln" x="48" y="528">17</text><text class="ln" x="48" y="558">18</text>
+            <text class="ln" x="48" y="588">19</text><text class="ln" x="48" y="618">20</text><text class="ln" x="48" y="648">21</text>
+            <text class="ln" x="48" y="678">22</text><text class="ln" x="48" y="708">23</text><text class="ln" x="48" y="738">24</text>
+            <text class="ln" x="48" y="768">25</text><text class="ln" x="48" y="798">26</text><text class="ln" x="48" y="828">27</text>
+            <text class="ln" x="48" y="858">28</text><text class="ln" x="48" y="888">29</text><text class="ln" x="48" y="918">30</text>
+            <text class="ln" x="48" y="948">31</text><text class="ln" x="48" y="978">32</text><text class="ln" x="48" y="1008">33</text>
+            <text class="ln" x="48" y="1038">34</text><text class="ln" x="48" y="1068">35</text><text class="ln" x="48" y="1098">36</text>
+            <text class="ln" x="48" y="1128">37</text><text class="ln" x="48" y="1158">38</text><text class="ln" x="48" y="1188">39</text>
+            <text class="ln" x="48" y="1218">40</text>
+          </g>
+
+          <!-- Code -->
+          <text class="code" x="72" y="48"><tspan class="tok-cmt">// Komplexes Enum: Währungen mit Symbol und Dezimalstellen</tspan></text>
+          <text class="code" x="72" y="78"><tspan class="tok-kw">public</tspan> <tspan class="tok-kw">enum</tspan> <tspan class="tok-type">Currency</tspan> <tspan class="tok-pun">{</tspan> <tspan class="tok-id">EUR</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"€"</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-num">2</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">USD</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"$"</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-num">2</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">JPY</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"¥"</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-num">0</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="108"></text>
+          <text class="code" x="92" y="138"><tspan class="tok-cmt">// Symbol und Anzahl Dezimalstellen</tspan></text>
+          <text class="code" x="92" y="168"><tspan class="tok-kw">private</tspan> <tspan class="tok-kw">final</tspan> <tspan class="tok-type">String</tspan> <tspan class="tok-id">symbol</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="92" y="198"><tspan class="tok-kw">private</tspan> <tspan class="tok-kw">final</tspan> <tspan class="tok-type">int</tspan> <tspan class="tok-id">scale</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="228"></text>
+          <text class="code" x="92" y="258"><tspan class="tok-cmt">// Privater Konstruktor (Enum-spezifisch)</tspan></text>
+          <text class="code" x="92" y="288"><tspan class="tok-kw">private</tspan> <tspan class="tok-type">Currency</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">String</tspan> <tspan class="tok-id">symbol</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-type">int</tspan> <tspan class="tok-id">scale</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="112" y="318"><tspan class="tok-kw">this</tspan>.<tspan class="tok-id">symbol</tspan> = <tspan class="tok-id">symbol</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="112" y="348"><tspan class="tok-kw">this</tspan>.<tspan class="tok-id">scale</tspan> = <tspan class="tok-id">scale</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="92" y="378"><tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="408"></text>
+          <text class="code" x="92" y="438"><tspan class="tok-cmt">// Formatierung: Betrag in kleinster Einheit (z. B. Cent) → Text</tspan></text>
+          <text class="code" x="92" y="468"><tspan class="tok-kw">public</tspan> <tspan class="tok-type">String</tspan> <tspan class="tok-fn">format</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">long</tspan> <tspan class="tok-id">minorUnits</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="112" y="498"><tspan class="tok-type">double</tspan> <tspan class="tok-id">base</tspan> = <tspan class="tok-id">minorUnits</tspan> <tspan class="tok-op">/</tspan> <tspan class="tok-fn">Math</tspan>.<tspan class="tok-fn">pow</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-num">10</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">scale</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="112" y="528"><tspan class="tok-kw">return</tspan> <tspan class="tok-id">symbol</tspan> <tspan class="tok-op">+</tspan> <tspan class="tok-fn">String</tspan>.<tspan class="tok-fn">format</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"%,.</tspan><tspan class="tok-id">{scale}</tspan><tspan class="tok-str">f"</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">base</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="92" y="558"><tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="588"></text>
+          <text class="code" x="92" y="618"><tspan class="tok-cmt">// Getter (bei Bedarf im Code nutzen)</tspan></text>
+          <text class="code" x="92" y="648"><tspan class="tok-kw">public</tspan> <tspan class="tok-type">String</tspan> <tspan class="tok-fn">getSymbol</tspan><tspan class="tok-pun">()</tspan> <tspan class="tok-pun">{</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-id">symbol</tspan><tspan class="tok-pun">;</tspan> <tspan class="tok-pun">}</tspan></text>
+          <text class="code" x="92" y="678"><tspan class="tok-kw">public</tspan> <tspan class="tok-type">int</tspan> <tspan class="tok-fn">getScale</tspan><tspan class="tok-pun">()</tspan> <tspan class="tok-pun">{</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-id">scale</tspan><tspan class="tok-pun">;</tspan> <tspan class="tok-pun">}</tspan></text>
+          <text class="code" x="72" y="708"><tspan class="tok-pun">}</tspan></text>
+          <text class="code" x="72" y="738"></text>
+
+          <text class="code" x="72" y="768"></text>
+          <text class="code" x="72" y="798"><tspan class="tok-cmt">// Komplexes Enum: Umsatzsteuer mit Satz und Rechenmethode</tspan></text>
+          <text class="code" x="72" y="828"><tspan class="tok-kw">public</tspan> <tspan class="tok-kw">enum</tspan> <tspan class="tok-type">TaxRate</tspan> <tspan class="tok-pun">{</tspan> <tspan class="tok-id">STANDARD</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-num">0.19</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-id">REDUZIERT</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-num">0.07</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="858"></text>
+          <text class="code" x="92" y="888"><tspan class="tok-cmt">// Steuersatz als Faktor (z. B. 0.19)</tspan></text>
+          <text class="code" x="92" y="918"><tspan class="tok-kw">private</tspan> <tspan class="tok-kw">final</tspan> <tspan class="tok-type">double</tspan> <tspan class="tok-id">rate</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="948"></text>
+          <text class="code" x="92" y="978"><tspan class="tok-cmt">// Privater Konstruktor</tspan></text>
+          <text class="code" x="92" y="1008"><tspan class="tok-kw">private</tspan> <tspan class="tok-type">TaxRate</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">double</tspan> <tspan class="tok-id">rate</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan> <tspan class="tok-kw">this</tspan>.<tspan class="tok-id">rate</tspan> = <tspan class="tok-id">rate</tspan><tspan class="tok-pun">;</tspan> <tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="1038"></text>
+          <text class="code" x="92" y="1068"><tspan class="tok-cmt">// Bruttobetrag aus Netto berechnen</tspan></text>
+          <text class="code" x="92" y="1098"><tspan class="tok-kw">public</tspan> <tspan class="tok-type">double</tspan> <tspan class="tok-fn">grossFromNet</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">double</tspan> <tspan class="tok-id">net</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-id">net</tspan> <tspan class="tok-op">*</tspan> <tspan class="tok-pun">(</tspan><tspan class="tok-num">1.0</tspan> <tspan class="tok-op">+</tspan> <tspan class="tok-id">rate</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan> <tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="1128"></text>
+          <text class="code" x="92" y="1158"><tspan class="tok-cmt">// Zugriff auf den Satz</tspan></text>
+          <text class="code" x="92" y="1188"><tspan class="tok-kw">public</tspan> <tspan class="tok-type">double</tspan> <tspan class="tok-fn">rate</tspan><tspan class="tok-pun">()</tspan> <tspan class="tok-pun">{</tspan> <tspan class="tok-kw">return</tspan> <tspan class="tok-id">rate</tspan><tspan class="tok-pun">;</tspan> <tspan class="tok-pun">}</tspan></text>
+          <text class="code" x="72" y="1218"><tspan class="tok-pun">}</tspan></text>
+        </svg>
+      </figure>
+      <div class="callout">
+        <strong>Hinweis:</strong> Enums sind unveränderlich. Felder werden über private Konstruktoren gesetzt; pro Konstante entsteht genau
+        eine Instanz. Logik (<code class="inline">format</code>, <code class="inline">grossFromNet</code>) direkt im Enum hält das Domänenwissen zusammen.
+      </div>
+    </section>
+
+    <!-- Best Practices -->
+    <section id="java-enums-bestpractices" aria-labelledby="java-enums-bestpractices-h2">
+      <h2 id="java-enums-bestpractices-h2">6) Best Practices &amp; typische Fehler</h2>
+      <ul>
+        <li><strong>Sprechende Namen:</strong> <code class="inline">DELIVERED</code> statt <code class="inline">DONE</code>; <code class="inline">REDUZIERT</code> statt <code class="inline">LOW2</code>.</li>
+        <li><strong>Enums vs. Strings:</strong> Typsicherheit bevorzugen; Strings nur für externe Schnittstellen (Serialisierung, UI).</li>
+        <li><strong>Keine Ordinal-Logik:</strong> <code class="inline">ordinal()</code> ist Implementierungsdetail und bricht bei Umbauten.</li>
+        <li><strong>Switch absichern:</strong> Für alle Fälle <code class="inline">default</code> behandeln (klassische Switch) bzw. exhaustive Switch prüfen.</li>
+        <li><strong>Domänenlogik im Enum:</strong> Validierung/Formatierung sind oft näher am Enum als an Aufrufern.</li>
+        <li><strong>Mapping-Methoden anbieten:</strong> <code class="inline">fromCode</code>, <code class="inline">fromSymbol</code>, um Eingaben kontrolliert zu parsen.</li>
+      </ul>
+    </section>
+
+    <!-- Aufgaben -->
+    <section id="java-enums-aufgaben" aria-labelledby="java-enums-aufgaben-h2">
+      <h2 id="java-enums-aufgaben-h2">7) Aufgaben</h2>
+
+      <h3>Verfestigende Aufgaben</h3>
+      <ul>
+        <li>Erstelle <code class="inline">OrderStatus</code> und implementiere eine Methode <code class="inline">isFinal()</code>, die <code class="inline">true</code> für <code class="inline">DELIVERED</code> und <code class="inline">CANCELLED</code> liefert.</li>
+        <li>Lege <code class="inline">ProductCategory</code> mit Konstanten an und gib für jede Kategorie einen Standardrabatt als <em>Kommentar</em> an (noch ohne Felder).</li>
+        <li>Nutze <code class="inline">switch</code>, um aus <code class="inline">OrderStatus</code> eine kurze Statusmeldung zu erzeugen und auf der Konsole auszugeben.</li>
+      </ul>
+
+      <h3>Übende Aufgaben</h3>
+      <ul>
+        <li>Implementiere <code class="inline">ProductCategory</code> als komplexes Enum mit Feld <code class="inline">discount</code> (z. B. 0.05) und Methode <code class="inline">apply(double net)</code>.</li>
+        <li>Erweitere <code class="inline">Currency</code> um eine statische Methode <code class="inline">fromSymbol(String s)</code>. Schreibe einfache Tests in <code class="inline">main</code>.</li>
+        <li>Füge <code class="inline">Risikolevel</code> mit Feldern <code class="inline">colorHex</code> und <code class="inline">threshold</code> hinzu. Implementiere <code class="inline">isAbove(double value)</code>.</li>
+      </ul>
+
+      <h3>Herausfordernde Aufgaben</h3>
+      <ul>
+        <li>Baue ein Enum <code class="inline">ShipmentMethod</code> (<em>STANDARD</em>, <em>EXPRESS</em>, <em>OVERNIGHT</em>) mit Feldern <code class="inline">basePrice</code> und <code class="inline">pricePerKg</code> und einer Methode <code class="inline">quote(kg)</code>. Simuliere mehrere Angebote.</li>
+        <li>Erstelle <code class="inline">TaxRegion</code> mit Codes (<em>DE</em>, <em>AT</em>, <em>FR</em>) und hinterlege je eine <code class="inline">TaxRate</code>. Implementiere <code class="inline">gross(String region, double net)</code> mit sicherem Mapping.</li>
+        <li>Entwirf <code class="inline">InvoiceState</code> und modelliere einen Mini-Workflow mit <code class="inline">next()</code>-Methode im Enum, die zulässige Folgezustände liefert.</li>
+      </ul>
+    </section>
+
+    <!-- Prompts -->
+    <section id="java-enums-prompts" aria-labelledby="java-enums-prompts-h2">
+      <h2 id="java-enums-prompts-h2">8) Vorschläge für KI-Prompts</h2>
+      <ul>
+        <li>„Analysiere meine Domäne und nenne alle Wertemengen, die sich sinnvoll als Enums modellieren lassen. Begründe jede Empfehlung kurz.“</li>
+        <li>„Überprüfe mein Enum <em>ProductCategory</em> auf sprechende Namen, vollständige Fälle und API-Design. Schlage Verbesserungen vor.“</li>
+        <li>„Erzeuge Testszenarien für <em>Currency.fromSymbol</em> inkl. Randfällen (Leerstring, unbekanntes Symbol).“</li>
+        <li>„Zeige mir eine sichere Parser-Implementierung <em>fromCode</em> mit Fehlerbehandlung, ohne <code class="inline">ordinal()</code> zu benutzen.“</li>
+        <li>„Refaktoriere eine <code class="inline">if-else</code>-Kaskade zu einem <code class="inline">switch</code> über ein Enum und erkläre die Vorteile.“</li>
+      </ul>
+    </section>
+
+    <!-- Glossar -->
+    <section id="java-enums-glossar" aria-labelledby="java-enums-glossar-h2">
+      <h2 id="java-enums-glossar-h2">9) Glossar</h2>
+      <dl>
+        <dt>Enum</dt>
+        <dd>Aufzählungstyp mit endlicher Menge wohldefinierter Konstanten; jede Konstante ist eine Instanz des Enum-Typs.</dd>
+
+        <dt>Konstante</dt>
+        <dd>Unveränderlicher, benannter Wert; in Enums als Großbuchstaben-Konvention üblich.</dd>
+
+        <dt>Switch</dt>
+        <dd>Steuerstruktur, die je nach Wert eines Ausdrucks (z. B. Enum-Konstante) verschiedene Zweige ausführt.</dd>
+
+        <dt>Ordinal</dt>
+        <dd>Interner Positionsindex einer Enum-Konstanten (0-basiert); für Persistenz/Logik <em>nicht</em> verwenden.</dd>
+
+        <dt>Factory-Methode</dt>
+        <dd>Statische Methode, die kontrolliert ein Objekt erzeugt oder zuordnet (z. B. <code class="inline">fromSymbol</code>).</dd>
+
+        <dt>Domänenlogik</dt>
+        <dd>Regeln und Berechnungen, die direkt aus der fachlichen Domäne stammen (z. B. Steuerberechnung).</dd>
+      </dl>
+    </section>
+
+  </main>
+</div>
+<!-- =========================== /Einbettbarer Inhalt =========================== -->
+
+
+
+<!-- =========== Einbettbarer Inhalt: Java-Records – kompakte, unveränderliche Datenträger ========== -->
+<div class="wrap" id="java-records">
+
+  <!-- Hero / Titel -->
+  <section class="hero header">
+    <div class="hero-inner">
+      <h1>Java-Records – kompakte, unveränderliche Datenträger</h1>
+      <p class="subtitle">
+        Records sind leichte Klassen für <em>Daten</em>: Felder heißen <em>Komponenten</em>, es gibt automatische Accessor-Methoden,
+        sowie generierte <code class="inline">equals</code>, <code class="inline">hashCode</code> und <code class="inline">toString</code>. Du lernst Syntax, Validierung mit
+        dem <em>compact constructor</em> und sinnvolle Einsätze im Code.
+      </p>
+      <p class="meta">
+        <span class="pill">Datenträger</span>
+        <span class="pill">Unveränderlichkeit</span>
+        <span class="pill">Compact Constructor</span>
+        <span class="pill">Accessor</span>
+        <span class="pill">equals/hashCode</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Inhaltsverzeichnis -->
+  <nav class="toc" aria-label="Inhaltsverzeichnis">
+    <h2>Inhalt</h2>
+    <ul>
+      <li><a href="#java-records-lernziele">1) Was kannst du am Ende?</a></li>
+      <li><a href="#java-records-was-ist-ein-record">2) Was ist ein Record?</a></li>
+      <li><a href="#java-records-einfaches-record">3) Einfaches Record + Nutzung</a></li>
+      <li><a href="#java-records-record-vs-klasse">4) Record vs. normale Klasse</a></li>
+      <li><a href="#java-records-compact-ctor">5) Validierung mit compact constructor</a></li>
+      <li><a href="#java-records-methoden">6) Records mit eigenen Methoden</a></li>
+      <li><a href="#java-records-zusammenspiel">7) Zusammenspiel: Collections &amp; Switch</a></li>
+      <li><a href="#java-records-aufgaben">8) Aufgaben</a></li>
+      <li><a href="#java-records-prompts">9) Vorschläge für KI-Prompts</a></li>
+      <li><a href="#java-records-glossar">10) Glossar</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- Lernziele -->
+    <section id="java-records-lernziele" aria-labelledby="java-records-lernziele-h2">
+      <h2 id="java-records-lernziele-h2">1) Was du am Ende kannst</h2>
+      <div class="grid">
+        <div class="callout ok"><strong>Einordnen:</strong> Du weißt, wann Records (Datenobjekte) besser passen als vollwertige Klassen.</div>
+        <div class="callout"><strong>Verwenden:</strong> Du deklarierst Records, erzeugst Instanzen und nutzt Accessor-Methoden.</div>
+        <div class="callout ok"><strong>Validieren:</strong> Du prüfst Eingaben im compact constructor und verhinderst ungültige Zustände.</div>
+        <div class="callout warn"><strong>Grenzen erkennen:</strong> Du kennst die Unveränderlichkeit und wann normale Klassen nötig sind.</div>
+      </div>
+    </section>
+
+    <!-- Was ist ein Record -->
+    <section id="java-records-was-ist-ein-record" aria-labelledby="java-records-was-ist-ein-record-h2">
+      <h2 id="java-records-was-ist-ein-record-h2">2) Was ist ein Record?</h2>
+      <p>
+        Ein <strong>Record</strong> ist ein spezieller Klassentyp für <em>unveränderliche</em> Daten. Die Felder heißen <em>Komponenten</em>.
+        Java generiert automatisch <code class="inline">equals</code>, <code class="inline">hashCode</code>, <code class="inline">toString</code> sowie Accessor-Methoden mit dem Namen der Komponente.
+        Du kannst Methoden hinzufügen und mit einem <em>compact constructor</em> Eingaben validieren.
+      </p>
+    </section>
+
+    <!-- Einfaches Record -->
+    <section id="java-records-einfaches-record" aria-labelledby="java-records-einfaches-record-h2">
+      <h2 id="java-records-einfaches-record-h2">3) Einfaches Record + Nutzung</h2>
+      <p class="lead">
+        Ein minimaler Datenträger für Kundeninformationen. Beachte die <em>Accessors</em> <code class="inline">id()</code> und <code class="inline">name()</code>.
+      </p>
+
+      <figure class="code-figure">
+        <svg class="syntax" viewBox="0 0 980 530" role="img" aria-labelledby="rec-simple-title">
+          <title id="rec-simple-title">Java: Einfaches Record &amp; Nutzung</title>
+          <rect x="0" y="0" width="980" height="530" class="panel"/>
+          <!-- Zeilennummern -->
+          <g>
+            <text class="ln" x="48" y="48">1</text><text class="ln" x="48" y="78">2</text><text class="ln" x="48" y="108">3</text>
+            <text class="ln" x="48" y="138">4</text><text class="ln" x="48" y="168">5</text><text class="ln" x="48" y="198">6</text>
+            <text class="ln" x="48" y="228">7</text><text class="ln" x="48" y="258">8</text><text class="ln" x="48" y="288">9</text>
+            <text class="ln" x="48" y="318">10</text><text class="ln" x="48" y="348">11</text><text class="ln" x="48" y="378">12</text>
+            <text class="ln" x="48" y="408">13</text><text class="ln" x="48" y="438">14</text><text class="ln" x="48" y="468">15</text>
+            <text class="ln" x="48" y="498">16</text>
+          </g>
+          <!-- Code -->
+          <text class="code" x="72" y="48"><tspan class="tok-cmt">// Record-Deklaration mit zwei Komponenten: id und name</tspan></text>
+          <text class="code" x="72" y="78"><tspan class="tok-kw">public</tspan> <tspan class="tok-kw">record</tspan> <tspan class="tok-type">Customer</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">String</tspan> <tspan class="tok-id">id</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-type">String</tspan> <tspan class="tok-id">name</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="72" y="108"><tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="138"><tspan class="tok-cmt">// Instanz erstellen</tspan></text>
+          <text class="code" x="72" y="168"><tspan class="tok-type">Customer</tspan> <tspan class="tok-id">c</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-kw">new</tspan> <tspan class="tok-type">Customer</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"C-100"</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-str">"Mara"</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="198"><tspan class="tok-cmt">// Accessor-Methoden: id() und name()</tspan></text>
+          <text class="code" x="72" y="228"><tspan class="tok-type">String</tspan> <tspan class="tok-id">id</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-id">c</tspan>.<tspan class="tok-fn">id</tspan><tspan class="tok-pun">()</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="72" y="258"><tspan class="tok-type">String</tspan> <tspan class="tok-id">name</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-id">c</tspan>.<tspan class="tok-fn">name</tspan><tspan class="tok-pun">()</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="288"><tspan class="tok-cmt">// Ausgabe</tspan></text>
+          <text class="code" x="72" y="318"><tspan class="tok-fn">System</tspan>.<tspan class="tok-id">out</tspan>.<tspan class="tok-fn">println</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-id">c</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="348"><tspan class="tok-cmt">// equals/hashCode basieren auf den Komponentenwerten</tspan></text>
+          <text class="code" x="72" y="378"><tspan class="tok-type">Customer</tspan> <tspan class="tok-id">c2</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-kw">new</tspan> <tspan class="tok-type">Customer</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"C-100"</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-str">"Mara"</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="72" y="408"><tspan class="tok-type">boolean</tspan> <tspan class="tok-id">same</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-id">c</tspan>.<tspan class="tok-fn">equals</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-id">c2</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="438"><tspan class="tok-cmt">// Hinweis: Komponenten sind final → unveränderlich</tspan></text>
+          <text class="code" x="72" y="468"><tspan class="tok-cmt">// c.name = "Lena"; // nicht möglich</tspan></text>
+
+          <text class="code" x="72" y="498"><tspan class="tok-cmt">// Typische neue Konzepte: record, Komponenten, Accessors</tspan></text>
+        </svg>
+      </figure>
+    </section>
+
+    <!-- Record vs Klasse -->
+    <section id="java-records-record-vs-klasse" aria-labelledby="java-records-record-vs-klasse-h2">
+      <h2 id="java-records-record-vs-klasse-h2">4) Record vs. normale Klasse</h2>
+      <table>
+        <thead>
+          <tr><th>Aspekt</th><th>Record</th><th>Normale Klasse</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Hauptzweck</td><td>Unveränderlicher Datenträger</td><td>Beliebige Modelle, oft veränderlich</td></tr>
+          <tr><td>Boilerplate</td><td>Generiert (equals, hashCode, toString, Accessors)</td><td>Manuell oder via IDE/Libs</td></tr>
+          <tr><td>Konstruktion</td><td>Parameter = Komponenten</td><td>Beliebige Konstruktoren</td></tr>
+          <tr><td>Felder</td><td>final (implizit)</td><td>frei wählbar</td></tr>
+          <tr><td>Vererbung</td><td><code class="inline">extends Record</code> (implizit), keine Subklassen</td><td>Vererbung frei (außer final)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn" style="margin-top:12px;">
+        <strong>Merke:</strong> Records sind nicht für reichhaltige, mutable Domänenmodelle gedacht. Bei Bedarf normale Klassen verwenden.
+      </div>
+    </section>
+
+    <!-- Compact Constructor -->
+    <section id="java-records-compact-ctor" aria-labelledby="java-records-compact-ctor-h2">
+      <h2 id="java-records-compact-ctor-h2">5) Validierung mit compact constructor</h2>
+      <p class="lead">
+        Mit dem <em>compact constructor</em> prüfst du Komponenten direkt bei der Erzeugung – ohne Parameterliste zu wiederholen.
+      </p>
+
+      <figure class="code-figure">
+        <svg class="syntax" viewBox="0 0 980 490" role="img" aria-labelledby="rec-compact-title">
+          <title id="rec-compact-title">Java: Record mit Validierung (compact constructor)</title>
+          <rect x="0" y="0" width="980" height="490" class="panel"/>
+          <!-- Zeilennummern -->
+          <g>
+            <text class="ln" x="48" y="48">1</text><text class="ln" x="48" y="78">2</text><text class="ln" x="48" y="108">3</text>
+            <text class="ln" x="48" y="138">4</text><text class="ln" x="48" y="168">5</text><text class="ln" x="48" y="198">6</text>
+            <text class="ln" x="48" y="228">7</text><text class="ln" x="48" y="258">8</text><text class="ln" x="48" y="288">9</text>
+            <text class="ln" x="48" y="318">10</text><text class="ln" x="48" y="348">11</text><text class="ln" x="48" y="378">12</text>
+            <text class="ln" x="48" y="408">13</text><text class="ln" x="48" y="438">14</text>
+          </g>
+          <!-- Code -->
+          <text class="code" x="72" y="48"><tspan class="tok-cmt">// Produkt mit Validierung: name nicht leer, price ≥ 0</tspan></text>
+          <text class="code" x="72" y="78"><tspan class="tok-kw">public</tspan> <tspan class="tok-kw">record</tspan> <tspan class="tok-type">Product</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">String</tspan> <tspan class="tok-id">name</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-type">double</tspan> <tspan class="tok-id">price</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+
+          <text class="code" x="72" y="108"><tspan class="tok-cmt">// Compact constructor: keine Parameterliste nötig</tspan></text>
+          <text class="code" x="72" y="138"><tspan class="tok-kw">public</tspan> <tspan class="tok-type">Product</tspan><tspan class="tok-pun">{</tspan></text>
+
+          <text class="code" x="92" y="168"><tspan class="tok-cmt">// Name prüfen</tspan></text>
+          <text class="code" x="92" y="198"><tspan class="tok-kw">if</tspan> <tspan class="tok-pun">(</tspan><tspan class="tok-id">name</tspan> <tspan class="tok-kw">==</tspan> <tspan class="tok-kw">null</tspan> <tspan class="tok-op">||</tspan> <tspan class="tok-id">name</tspan>.<tspan class="tok-fn">isBlank</tspan><tspan class="tok-pun">()</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-kw">throw</tspan> <tspan class="tok-kw">new</tspan> <tspan class="tok-type">IllegalArgumentException</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"name"</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="92" y="228"><tspan class="tok-cmt">// Preis prüfen</tspan></text>
+          <text class="code" x="92" y="258"><tspan class="tok-kw">if</tspan> <tspan class="tok-pun">(</tspan><tspan class="tok-id">price</tspan> <tspan class="tok-op">&lt;</tspan> <tspan class="tok-num">0</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-kw">throw</tspan> <tspan class="tok-kw">new</tspan> <tspan class="tok-type">IllegalArgumentException</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"price"</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="288"><tspan class="tok-pun">}</tspan></text>
+          <text class="code" x="72" y="318"><tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="348"><tspan class="tok-cmt">// Verwendung: löst Ausnahme aus, wenn ungültig</tspan></text>
+          <text class="code" x="72" y="378"><tspan class="tok-type">Product</tspan> <tspan class="tok-id">p</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-kw">new</tspan> <tspan class="tok-type">Product</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"Tasse"</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-num">8.90</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="408"><tspan class="tok-cmt">// Product q = new Product("", -1); // IllegalArgumentException</tspan></text>
+
+          <text class="code" x="72" y="438"><tspan class="tok-cmt">// Neues Konzept: compact constructor (Validierung)</tspan></text>
+        </svg>
+      </figure>
+    </section>
+
+    <!-- Methoden im Record -->
+    <section id="java-records-methoden" aria-labelledby="java-records-methoden-h2">
+      <h2 id="java-records-methoden-h2">6) Records mit eigenen Methoden</h2>
+      <p class="lead">
+        Records können Verhalten kapseln – z. B. Ableitungen aus ihren Komponenten berechnen.
+      </p>
+
+      <figure class="code-figure">
+        <svg class="syntax" viewBox="0 0 980 390" role="img" aria-labelledby="rec-methods-title">
+          <title id="rec-methods-title">Java: Record mit zusätzlicher Methode</title>
+          <rect x="0" y="0" width="980" height="390" class="panel"/>
+          <!-- Zeilennummern -->
+          <g>
+            <text class="ln" x="48" y="48">1</text><text class="ln" x="48" y="78">2</text><text class="ln" x="48" y="108">3</text>
+            <text class="ln" x="48" y="138">4</text><text class="ln" x="48" y="168">5</text><text class="ln" x="48" y="198">6</text>
+            <text class="ln" x="48" y="228">7</text><text class="ln" x="48" y="258">8</text><text class="ln" x="48" y="288">9</text>
+            <text class="ln" x="48" y="318">10</text><text class="ln" x="48" y="348">11</text>
+          </g>
+          <!-- Code -->
+          <text class="code" x="72" y="48"><tspan class="tok-cmt">// Position mit Brutto-Preis berechnen</tspan></text>
+          <text class="code" x="72" y="78"><tspan class="tok-kw">public</tspan> <tspan class="tok-kw">record</tspan> <tspan class="tok-type">LineItem</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">String</tspan> <tspan class="tok-id">sku</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-type">int</tspan> <tspan class="tok-id">quantity</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-type">double</tspan> <tspan class="tok-id">netUnit</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+
+          <text class="code" x="92" y="108"><tspan class="tok-cmt">// Methode: Brutto gesamt bei gegebener Steuer</tspan></text>
+          <text class="code" x="92" y="138"><tspan class="tok-kw">public</tspan> <tspan class="tok-type">double</tspan> <tspan class="tok-fn">grossTotal</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">double</tspan> <tspan class="tok-id">taxRate</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="112" y="168"><tspan class="tok-type">double</tspan> <tspan class="tok-id">netTotal</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-id">quantity</tspan> <tspan class="tok-op">*</tspan> <tspan class="tok-id">netUnit</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="112" y="198"><tspan class="tok-kw">return</tspan> <tspan class="tok-id">netTotal</tspan> <tspan class="tok-op">*</tspan> <tspan class="tok-pun">(</tspan><tspan class="tok-num">1.0</tspan> <tspan class="tok-op">+</tspan> <tspan class="tok-id">taxRate</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="92" y="228"><tspan class="tok-pun">}</tspan></text>
+		  <text class="code" x="72" y="258"><tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="288"><tspan class="tok-cmt">// Nutzung in main()</tspan></text>
+          <text class="code" x="72" y="318"><tspan class="tok-type">LineItem</tspan> <tspan class="tok-id">item</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-kw">new</tspan> <tspan class="tok-type">LineItem</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"SKU-1"</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-num">3</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-num">9.90</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="72" y="348"><tspan class="tok-fn">System</tspan>.<tspan class="tok-id">out</tspan>.<tspan class="tok-fn">println</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-id">item</tspan>.<tspan class="tok-fn">grossTotal</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-num">0.19</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+        </svg>
+      </figure>
+    </section>
+
+    <!-- Zusammenspiel -->
+    <section id="java-records-zusammenspiel" aria-labelledby="java-records-zusammenspiel-h2">
+      <h2 id="java-records-zusammenspiel-h2">7) Zusammenspiel: Collections &amp; Switch</h2>
+      <p>
+        Durch generierte <code class="inline">equals</code>/<code class="inline">hashCode</code> eignen sich Records als Schlüssel in Maps. In <code class="inline">switch</code>-Anweisungen nutzt du ihre Felder
+        über Accessors. Für komplexe Logik bleib bei vorherigen Grundlagen (keine Pattern-Matches nötig).
+      </p>
+
+      <figure class="code-figure">
+        <svg class="syntax" viewBox="0 0 980 460" role="img" aria-labelledby="rec-collections-title">
+          <title id="rec-collections-title">Java: Records in Collections und einfache Switch-Nutzung</title>
+          <rect x="0" y="0" width="980" height="460" class="panel"/>
+          <!-- Zeilennummern -->
+          <g>
+            <text class="ln" x="48" y="48">1</text><text class="ln" x="48" y="78">2</text><text class="ln" x="48" y="108">3</text>
+            <text class="ln" x="48" y="138">4</text><text class="ln" x="48" y="168">5</text><text class="ln" x="48" y="198">6</text>
+            <text class="ln" x="48" y="228">7</text><text class="ln" x="48" y="258">8</text><text class="ln" x="48" y="288">9</text>
+            <text class="ln" x="48" y="318">10</text><text class="ln" x="48" y="348">11</text><text class="ln" x="48" y="378">12</text>
+            <text class="ln" x="48" y="408">13</text>
+          </g>
+          <!-- Code -->
+          <text class="code" x="72" y="48"><tspan class="tok-cmt">// Key-Record für eine Map</tspan></text>
+          <text class="code" x="72" y="78"><tspan class="tok-kw">public</tspan> <tspan class="tok-kw">record</tspan> <tspan class="tok-type">Sku</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-type">String</tspan> <tspan class="tok-id">value</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="72" y="108"><tspan class="tok-pun">}</tspan></text>
+
+          <text class="code" x="72" y="138"><tspan class="tok-cmt">// Map mit Record-Schlüssel</tspan></text>
+          <text class="code" x="72" y="168"><tspan class="tok-type">java.util</tspan>.<tspan class="tok-type">Map</tspan><tspan class="tok-op">&lt;</tspan><tspan class="tok-type">Sku</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-type">Integer</tspan><tspan class="tok-op">&gt;</tspan> <tspan class="tok-id">stock</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-kw">new</tspan> <tspan class="tok-type">java.util</tspan>.<tspan class="tok-type">HashMap</tspan><tspan class="tok-pun">()</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="72" y="198"><tspan class="tok-id">stock</tspan>.<tspan class="tok-fn">put</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-kw">new</tspan> <tspan class="tok-type">Sku</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"SKU-1"</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">,</tspan> <tspan class="tok-num">10</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+
+          <text class="code" x="72" y="228"><tspan class="tok-cmt">// Switch über Accessor</tspan></text>
+          <text class="code" x="72" y="258"><tspan class="tok-type">Sku</tspan> <tspan class="tok-id">s</tspan> <tspan class="tok-op">=</tspan> <tspan class="tok-kw">new</tspan> <tspan class="tok-type">Sku</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"SKU-1"</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="72" y="288"><tspan class="tok-kw">switch</tspan> <tspan class="tok-pun">(</tspan><tspan class="tok-id">s</tspan>.<tspan class="tok-fn">value</tspan><tspan class="tok-pun">()</tspan><tspan class="tok-pun">)</tspan> <tspan class="tok-pun">{</tspan></text>
+          <text class="code" x="92" y="318"><tspan class="tok-kw">case</tspan> <tspan class="tok-str">"SKU-1"</tspan><tspan class="tok-pun">:</tspan> <tspan class="tok-fn">System</tspan>.<tspan class="tok-id">out</tspan>.<tspan class="tok-fn">println</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"Top-Seller"</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan> </text>
+          <text class="code" x="92" y="348"><tspan class="tok-kw">break</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="92" y="378"><tspan class="tok-kw">default</tspan><tspan class="tok-pun">:</tspan> <tspan class="tok-fn">System</tspan>.<tspan class="tok-id">out</tspan>.<tspan class="tok-fn">println</tspan><tspan class="tok-pun">(</tspan><tspan class="tok-str">"Standard-Artikel"</tspan><tspan class="tok-pun">)</tspan><tspan class="tok-pun">;</tspan></text>
+          <text class="code" x="72" y="408"><tspan class="tok-pun">}</tspan></text>
+        </svg>
+      </figure>
+    </section>
+
+    <!-- Aufgaben -->
+    <section id="java-records-aufgaben" aria-labelledby="java-records-aufgaben-h2">
+      <h2 id="java-records-aufgaben-h2">8) Aufgaben</h2>
+
+      <h3>Verfestigende Aufgaben</h3>
+      <ul>
+        <li>Erstelle ein Record <code class="inline">Point</code> mit <code class="inline">x</code> und <code class="inline">y</code> (double). Gib zwei Instanzen auf der Konsole aus und vergleiche sie mit <code class="inline">equals</code>.</li>
+        <li>Lege ein Record <code class="inline">Email</code> mit <code class="inline">localPart</code> und <code class="inline">domain</code> an. Erzeuge zwei Einträge in einer <code class="inline">HashSet&lt;Email&gt;</code>.</li>
+        <li>Schreibe ein Record <code class="inline">Country</code> mit <code class="inline">code</code> (z. B. "DE") und <code class="inline">name</code>. Nutze es als Schlüssel in einer <code class="inline">Map</code>.</li>
+      </ul>
+
+      <h3>Übende Aufgaben</h3>
+      <ul>
+        <li>Implementiere <code class="inline">Product</code> mit compact constructor (Name nicht leer, Preis ≥ 0). Füge eine Methode <code class="inline">gross(double rate)</code> hinzu.</li>
+        <li>Erstelle ein Record <code class="inline">Person</code> mit <code class="inline">firstName</code>, <code class="inline">lastName</code>, <code class="inline">birthYear</code>. Implementiere <code class="inline">fullName()</code> und <code class="inline">age(int currentYear)</code>.</li>
+        <li>Baue ein Record <code class="inline">Money</code> mit <code class="inline">amount</code> (long, in Cent) und <code class="inline">currency</code> (String). Implementiere <code class="inline">format()</code>.</li>
+      </ul>
+
+      <h3>Herausfordernde Aufgaben</h3>
+      <ul>
+        <li>Entwirf ein Record <code class="inline">InvoiceLine</code> (<code class="inline">sku</code>, <code class="inline">qty</code>, <code class="inline">netUnit</code>) mit compact constructor (qty &gt; 0, netUnit ≥ 0) und Methoden <code class="inline">netTotal()</code> und <code class="inline">grossTotal(double tax)</code>. Teste mehrere Fälle.</li>
+        <li>Erstelle Records <code class="inline">LatLon</code> und <code class="inline">Distance</code>. Implementiere in <code class="inline">LatLon</code> eine Methode <code class="inline">distanceTo(LatLon)</code> (vereinfachte Rechnung reicht) und gib das Ergebnis formatiert aus.</li>
+        <li>Simuliere eine kleine <code class="inline">Map&lt;Sku, Integer&gt;</code> und implementiere eine Funktion <code class="inline">addStock(Map&lt;Sku,Integer&gt;, Sku, int)</code>, die neue Bestände korrekt addiert.</li>
+      </ul>
+    </section>
+
+    <!-- Prompts -->
+    <section id="java-records-prompts" aria-labelledby="java-records-prompts-h2">
+      <h2 id="java-records-prompts-h2">9) Vorschläge für KI-Prompts</h2>
+      <ul>
+        <li>„Zeige mir Beispiele, wann ein Record dem Einsatz einer normalen Klasse überlegen ist. Erkläre die Begründung fachlich.“</li>
+        <li>„Prüfe meinen compact constructor auf Vollständigkeit: Welche ungültigen Zustände habe ich übersehen?“</li>
+        <li>„Erzeuge Unit-Tests für mein Record <em>Product</em> mit Randfällen (Null, Leerstring, negative Preise).“</li>
+        <li>„Refaktoriere meine DTO-Klassen zu Records und liste alle Code-Stellen auf, die dadurch einfacher werden.“</li>
+        <li>„Erkläre in einfachen Worten, warum <em>equals</em>/<em>hashCode</em> bei Records zuverlässig für Map/Set geeignet sind.“</li>
+      </ul>
+    </section>
+
+    <!-- Glossar -->
+    <section id="java-records-glossar" aria-labelledby="java-records-glossar-h2">
+      <h2 id="java-records-glossar-h2">10) Glossar</h2>
+      <dl>
+        <dt>Record</dt>
+        <dd>Spezielle, unveränderliche Klasse für Daten (Komponenten). Java generiert equals/hashCode/toString und Accessors.</dd>
+
+        <dt>Komponente</dt>
+        <dd>Ein Feld eines Records (z. B. <code class="inline">String name</code>) – automatisch <code class="inline">final</code> und über einen Accessor erreichbar.</dd>
+
+        <dt>Accessor</dt>
+        <dd>Automatisch generierte Methode mit dem Komponentennamen (z. B. <code class="inline">name()</code>).</dd>
+
+        <dt>Compact Constructor</dt>
+        <dd>Konstruktor-Form in Records ohne explizite Parameterliste, ideal für Validierung der Komponenten.</dd>
+
+        <dt>equals/hashCode</dt>
+        <dd>Von Records automatisch generiert – basieren auf allen Komponentenwerten (Wertgleichheit).</dd>
+
+        <dt>Unveränderlichkeit</dt>
+        <dd>Komponenten sind final; nach der Erstellung kann der Zustand nicht geändert werden.</dd>
       </dl>
     </section>
 
