@@ -27,4 +27,9 @@ public class ArrayDemonstrate {
     return maxZahl;
   }
 
+  public static int[] sortWithBubble(int[] arr) {
+
+    return new int[]{};
+  }
+
 }
