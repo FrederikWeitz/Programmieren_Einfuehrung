@@ -14,14 +14,17 @@ public class ArrayDemonstrate {
     //  zur Erläuterung: null dient als Signal, dass die Funktion kein ordentlich Ergebnis liefern konnte
 
     // Guard Clauses
+    if (intArr == null || intArr.length == 0) return null;
 
     // Definition von einer maxZahl (= Invariante)
+    int maxZahl = intArr[0];
 
-    // Schleifendurchlauf durch das gesamte Array
-
-
-
-    return 0;
+    // Schleifendurchlauf durch das gesamte Array, Index wird nicht benötigt,
+    // deshalb 'moderne' For-Schleife
+    for (int i : intArr) {
+      maxZahl = Math.max(i, maxZahl);
+    }
+    return maxZahl;
   }
 
 }
