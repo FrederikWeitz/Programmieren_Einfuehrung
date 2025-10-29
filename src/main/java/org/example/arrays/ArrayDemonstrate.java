@@ -59,4 +59,66 @@ public class ArrayDemonstrate {
     }
     return arr;
   }
+
+  public static void demonstrate2DArray() {
+    // Array von 3 x 8 Feldern; 3 im äußeren Array, jeweils 8 im inneren Array
+    int[][] arr =
+        {
+            {1,  2, 3, 4, 5, 6, 7, 8},
+            {9, 10,11,12,13,14,15,16},
+            {17,18,19,20,21,22,23,24}
+        };
+
+    System.out.println("Alte Form der for-Schleife:");
+    for(int i = 0; i < arr.length; i++) {
+      for(int j = 0; j < arr[i].length; j++) {
+        System.out.print(arr[i][j] + "-");
+      }
+      System.out.println();
+    }
+
+    System.out.println("\nNeue Form der for-Schleife:");
+    for (int[] ints : arr) {
+      for (int anInt : ints) {
+        System.out.print(anInt + "-");
+      }
+      System.out.println();
+    }
+  }
+
+  public static void createCheckBoard() {
+    // gleichmäßiges zweidimensionales Array
+    ChessFigures[][] checkBoard =
+        {
+            {ChessFigures.TURM,ChessFigures.SPRINGER,ChessFigures.LÄUFER,ChessFigures.KÖNIG,ChessFigures.DAME,ChessFigures.LÄUFER,ChessFigures.SPRINGER,ChessFigures.TURM},
+            {ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER},
+            {ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER},
+            {ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER},
+            {ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER},
+            {ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER,ChessFigures.LEER},
+            {ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER,ChessFigures.BAUER},
+            {ChessFigures.TURM,ChessFigures.SPRINGER,ChessFigures.LÄUFER,ChessFigures.KÖNIG,ChessFigures.DAME,ChessFigures.LÄUFER,ChessFigures.SPRINGER,ChessFigures.TURM}
+        };
+
+    for(ChessFigures[] figureArray : checkBoard) {
+      for(ChessFigures figure : figureArray) {
+        System.out.print(figure.getSymbol());
+      }
+      System.out.println();
+    }
+  }
+
+  public static void raggedArray() {
+    // zweidimensionale Arrays, bei denen das innere Array unterschiedlich viele
+    // Elemente besitzt, nennt man ragged (zerlumpt, zerfetzt)
+    int[][] arr = new int[5][];
+    arr[0] = new int[]{1, 2, 3, 4, 5, 6};
+    arr[1] = new int[]{1,2,3};
+    arr[2] = new int[]{1,2,3,4,5};
+    arr[3] = new int[]{1,2};
+    arr[4] = new int[10];
+
+
+  }
+
 }
