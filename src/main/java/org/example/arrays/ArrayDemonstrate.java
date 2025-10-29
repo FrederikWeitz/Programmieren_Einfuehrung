@@ -42,16 +42,21 @@ public class ArrayDemonstrate {
     // da bei jedem Durchlauf noch ein Element weniger geprüft werden muss, brauche ich
     // eine Reihe von length-2, bis length entspricht null, absteigend:
     // ich muss die äußere Schleife runterzählen
+    for (int out = (arr.length - 2); out >= 0; out--) {
 
-
-    // jedes Element von index = 0 bis index = äußere Schleifenvariable
-
-    // aktuelles und nächstes Element überprüfen
-    // WENN aktuelles > nächstes, DANN tauschen
-    // (aktuelles Element raus, nächstes Element nach unten, rausgenommenes Element einfügen)
-
-
+      // jedes Element von index = 0 bis index = äußere Schleifenvariable
+      for (int in = 0; in <= out; in++) {
+        // swap-Mechanismus
+        // aktuelles und nächstes Element überprüfen
+        // WENN aktuelles > nächstes, DANN tauschen
+        // (aktuelles Element raus, nächstes Element nach unten, rausgenommenes Element einfügen)
+        if (arr[in] > arr[in+1]) {
+          int temp = arr[in];    // Wert a herausnehmen
+          arr[in] = arr[in + 1]; // Wert b an Position a einschreiben
+          arr[in + 1] = temp;    // Wert a an Position b einschreiben
+        }
+      }
+    }
     return arr;
   }
-
 }
