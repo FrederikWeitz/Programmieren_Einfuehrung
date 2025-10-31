@@ -51,6 +51,86 @@ public class Aufgabe {
   }
 
   // Copy-Konstruktor
+  // der Parameter ist IMMER eine Instanz derselben Klasse
+  public Aufgabe(Aufgabe other) {
+    // Kopiere einfache Felder
+    this.name = other.name;
+    this.beschreibung = other.beschreibung;
+    this.start = other.start;
+    this.ende = other.ende;
+    // Erzeuge neue Listen
+    this.mitarbeiter = new ArrayList<>();
+    this.log = new ArrayList<>();
+    // Übernehme Referenz auf Verantwortlichen (optional tief kopieren)
+    this.verantwortlicher = other.verantwortlicher;
+  }
 
+  public String getName() {
+    return name;
+  }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public LocalDateTime getStart() {
+    return start;
+  }
+
+  public void setStart() {
+    this.start = LocalDateTime.now();
+  }
+
+  public LocalDateTime getEnde() {
+    return ende;
+  }
+
+  public void setEnde() {
+    this.ende = LocalDateTime.now();
+  }
+
+  // Dauer in Minuten berechnen
+  public long getDauerMinuten() {
+    // Nutze Duration zwischen Start und Ende
+    if (ende != null) return Duration.between(start, ende).toMinutes();
+    return -1;
+  }
+
+  // Fortschrittseintrag hinzufügen
+  public void addFortschritt(Fortschrittseintrag e) {
+    // Hänge an die Logliste an
+    log.add(e);
+    // Informiere Mitarbeitende über Fortschritt
+    notifyMitarbeiterFortschritt(e.getProzent());
+    // Informiere Verantwortlichen kurz
+    notifyVerantwortlicher("Fortschritt aktualisiert");
+  }
+
+  // Mitarbeitende über Start informieren
+  public void notifyMitarbeiterStart() {
+    // Über alle Mitarbeitenden iterieren
+    for (Mitarbeiter m : mitarbeiter) {
+    // Einzelnen Mitarbeiter informieren
+      m.informStart(start);
+    }
+  }
+  // Mitarbeitende über Ende informieren
+  public void notifyMitarbeiterEnde() {
+    // Über alle Mitarbeitenden iterieren
+    for (Mitarbeiter m : mitarbeiter) {
+      // Einzelnen Mitarbeiter informieren
+      m.informEnde(ende);
+    }
+  }
+
+  // Mitarbeitende über Fortschritt informieren
+  public void notifyMitarbeiterFortschritt(double prozent) {
+    // Schleife über alle Mitarbeitenden
+    for (Mitarbeiter m : mitarbeiter) {
+    // Einzelnen Mitarbeiter informieren
+      m.informFortschritt(prozent);
+    }
+  }
+  private void notifyVerantwortlicher(String fortschrittAktualisiert) {
+  }
 }
