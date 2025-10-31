@@ -10,5 +10,6 @@ public class Mitarbeiter {
   }
 
   public void informFortschritt(double prozent) {
+
   }
 }
