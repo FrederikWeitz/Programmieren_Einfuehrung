@@ -8,8 +8,6 @@ import static org.example.arrays.ArrayDemonstrate.demonstrate2DArray;
 
 public class App {
   public static void main(String[] args) {
-    Aufgabe aufgabe = new Aufgabe();
 
-    createCheckBoard();
   }
 }
